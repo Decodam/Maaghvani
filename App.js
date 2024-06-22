@@ -1,25 +1,24 @@
 import React, {  } from 'react';
-import { StyleSheet, View } from 'react-native';
-import Text from './app/components/Text';
+import { StatusBar } from 'expo-status-bar';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { NavigationContainer } from '@react-navigation/native';
+import Router from "./app/routers/router";
+import store from './app/context/store';
+import { Provider } from 'react-redux';
 
 
 const App = (props) => {
     return(
-        <View style={styles.container} >
-            <Text size={20} font="bold">App</Text>
-        </View>
+        <SafeAreaProvider>
+            <StatusBar />
+            <Provider store={store}>
+                <NavigationContainer>
+                    <Router />
+                </NavigationContainer>
+            </Provider>
+        </SafeAreaProvider>
     );
 }
 
 
 export default App;
-
-
-const styles =  StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    }
-})
