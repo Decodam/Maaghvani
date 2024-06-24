@@ -4,11 +4,19 @@ import Text from '../components/Text';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesome, MaterialIcons, AntDesign } from '@expo/vector-icons';
 
-const LoginScreen = (props) => {
+const RegisterScreen = (props) => {
     const [passwordVisible, setPasswordVisible] = useState(false);
-    const [Error, setError] = useState(null);
+    const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+    const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [agreeTerms, setAgreeTerms] = useState(false);
+    const [error, setError] = useState(null);
+
+    const handleRegister = () => {
+        // Your registration logic goes here
+    };
 
     return (
         <SafeAreaView style={styles.container}>
@@ -17,17 +25,27 @@ const LoginScreen = (props) => {
                     <AntDesign name="arrowleft" size={24} color="black" />
                 </TouchableOpacity>
                 <Image source={require('../../assets/icon.png')} style={styles.logo} />
-                <Text size={24} style={styles.title}>Welcome Back!</Text>
-                <Text style={styles.subtitle}>Sign in to continue learning and connecting with native speakers.</Text>
+                <Text size={24} style={styles.title}>Create an Account</Text>
+                <Text style={styles.subtitle}>Sign up to start learning and connecting with native speakers!</Text>
                 
-                {Error && <Text size={12} style={styles.error}>{Error}.</Text>}
+                {error && <Text size={12} style={styles.error}>{error}.</Text>}
 
                 <View style={styles.inputContainer}>
                     <FontAwesome name="user" size={20} color="grey" />
                     <TextInput
-                        inputMode='email'
                         style={styles.input}
-                        placeholder="Email address"
+                        placeholder="Full Name"
+                        value={fullName}
+                        onChangeText={setFullName}
+                    />
+                </View>
+
+                <View style={styles.inputContainer}>
+                    <FontAwesome name="envelope" size={20} color="grey" />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Email Address"
+                        inputMode='email'
                         value={email}
                         onChangeText={setEmail}
                     />
@@ -47,8 +65,35 @@ const LoginScreen = (props) => {
                     </TouchableOpacity>
                 </View>
 
-                <TouchableOpacity style={styles.signInButton}>
-                    <Text size={18} style={styles.signInButtonText}>Sign In</Text>
+                <View style={styles.inputContainer}>
+                    <MaterialIcons name="lock" size={20} color="grey" />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Confirm Password"
+                        secureTextEntry={!confirmPasswordVisible}
+                        value={confirmPassword}
+                        onChangeText={setConfirmPassword}
+                    />
+                    <TouchableOpacity onPress={() => setConfirmPasswordVisible(!confirmPasswordVisible)}>
+                        <MaterialIcons name={confirmPasswordVisible ? "visibility" : "visibility-off"} size={20} color="grey" />
+                    </TouchableOpacity>
+                </View>
+
+                <View style={styles.checkboxContainer}>
+                    <TouchableOpacity onPress={() => setAgreeTerms(!agreeTerms)}>
+                        <FontAwesome
+                            name={agreeTerms ? "check-square-o" : "square-o"}
+                            size={20}
+                            color={agreeTerms ? "#D9E021" : "grey"}
+                        />
+                    </TouchableOpacity>
+                    <Text style={styles.checkboxText}>
+                        I agree to the <Text style={styles.boldText}>Terms and Conditions</Text>
+                    </Text>
+                </View>
+
+                <TouchableOpacity style={styles.signInButton} onPress={handleRegister}>
+                    <Text size={18} style={styles.signInButtonText}>Register</Text>
                 </TouchableOpacity>
 
                 <View style={styles.orContainer}>
@@ -69,15 +114,15 @@ const LoginScreen = (props) => {
                     </FontAwesome.Button>
                 </View>
 
-                <TouchableOpacity onPress={() => props.navigation.navigate('Register')}>
-                    <Text style={styles.registerText}>Don’t have an account? <Text style={styles.boldText}>Register</Text></Text>
+                <TouchableOpacity onPress={() => props.navigation.navigate('Login')}>
+                    <Text style={styles.registerText}>Already have an account? <Text style={styles.boldText}>Sign In</Text></Text>
                 </TouchableOpacity>
             </ScrollView>
         </SafeAreaView>
     );
 }
 
-export default LoginScreen;
+export default RegisterScreen;
 
 const styles = StyleSheet.create({
     container: {
@@ -116,7 +161,7 @@ const styles = StyleSheet.create({
     error: {
         color: 'red',
         textAlign: 'center',
-        marginBottom: 40,
+        marginBottom: 20,
         paddingHorizontal: 20,
         fontWeight: "bold"
     },
@@ -147,6 +192,16 @@ const styles = StyleSheet.create({
         color: '#000',
         fontSize: 16,
         fontWeight: 'bold',
+    },
+    checkboxContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    checkboxText: {
+        marginLeft: 10,
+        fontSize: 16,
+        color: '#000',
     },
     orContainer: {
         flexDirection: 'row',

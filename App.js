@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import Router from "./app/routers/router";
 import store from './app/context/store';
 import { Provider } from 'react-redux';
+import {TranslatorProvider} from 'react-native-translator' // here
 
 
 const App = (props) => {
@@ -12,9 +13,11 @@ const App = (props) => {
         <SafeAreaProvider>
             <StatusBar />
             <Provider store={store}>
-                <NavigationContainer>
-                    <Router />
-                </NavigationContainer>
+                <TranslatorProvider>
+                    <NavigationContainer>
+                        <Router />
+                    </NavigationContainer>
+                </TranslatorProvider>
             </Provider>
         </SafeAreaProvider>
     );
